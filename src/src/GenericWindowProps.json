@@ -1,0 +1,22 @@
+{
+    "window": {
+        "size": {
+            "width": 300,
+            "height": 300
+        },
+        "location": {
+            "x": 25,
+            "y": 25
+        }
+    },
+    "boundaries": {
+        "top": 25,
+        "bottom": 25,
+        "left": 2,
+        "right": 2
+    },
+    "colors": {
+        "background": { "R": 245, "G": 245, "B": 245, "A": 255 },
+        "border": { "R": 220, "G": 220, "B": 220, "A": 255 }
+    }
+}
