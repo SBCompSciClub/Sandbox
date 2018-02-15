@@ -78,9 +78,29 @@ class GenericWindow extends Component
                 isDownResizeTop: false
             });
         });
+        window.addEventListener("_event_onZIndexMDLWindow", (e) =>
+        {
+            let idx = e.detail.index;
+            let val = e.detail.val;
+            if (idx === this.props.index)
+            {
+                if (val === -1)
+                {
+                    this.properties.window.zIndex--;
+                }
+                else
+                {
+                    this.properties.window.zIndex = val;
+                }
+                this.setState({
+                    RANDO: true
+                });
+            }
+        });
     }
     componentWillMount()
     {
+        this.properties.window.zIndex = this.props.zIndex;
         this.setState({
             isDownMove: false
         });
@@ -88,7 +108,10 @@ class GenericWindow extends Component
     render()
     {
         return (
-            <div id="GenericWindow" style={{ position: "fixed", top: this.properties.window.location.y, left: this.properties.window.location.x, width: this.properties.window.size.width, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.background), boxShadow: "0 2px 4px 2px rgba(0, 0, 0, 0.2)", userSelect: "none" }}>
+            <div id="GenericWindow" style={{ position: "fixed", top: this.properties.window.location.y, left: this.properties.window.location.x, width: this.properties.window.size.width, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.background), boxShadow: "0 2px 4px 2px rgba(0, 0, 0, 0.2)", userSelect: "none", zIndex: this.properties.window.zIndex }} onMouseDown={(e) =>
+            {
+                window.dispatchEvent(new CustomEvent("_event_onWindowSelect", { detail: { index: this.props.index } }));
+            }}>
                 <div id="boundBottom" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: this.properties.boundaries.bottom, background: CSS_ToRGB(this.properties.colors.border), cursor: "ns-resize" }} onMouseDown={(e) =>
                 {
                     this.setState({
@@ -123,7 +146,10 @@ class GenericWindow extends Component
                         offsetY: this.properties.window.location.y - e.clientY
                     });
                 }}>
-                    <p style={{ width: "100%", overflow: "hidden" }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }}><Icon name="close" /></Button></p>
+                    <p style={{ width: "100%", overflow: "hidden" }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }} onClick={(e) =>
+                    {
+                        window.dispatchEvent(new CustomEvent("_event_onCloseMDLWindow", { detail: { index: this.props.index } }));
+                    }}> <Icon name="close" /></Button></p>
                 </div>
                 <div id="boundTop" style={{ position: "absolute", top: 0, left: 0, right: 0, height: this.properties.boundaries.bottom, cursor: "ns-resize" }} onMouseDown={(e) =>
                 {
