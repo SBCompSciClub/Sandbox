@@ -7,7 +7,8 @@
         "location": {
             "x": 25,
             "y": 25
-        }
+        },
+        "text": "Generic Window"
     },
     "boundaries": {
         "top": 25,
@@ -16,7 +17,17 @@
         "right": 5
     },
     "colors": {
-        "background": { "R": 245, "G": 245, "B": 245, "A": 255 },
-        "border": { "R": 220, "G": 220, "B": 220, "A": 255 }
+        "background": {
+            "R": 245,
+            "G": 245,
+            "B": 245,
+            "A": 255
+        },
+        "border": {
+            "R": 220,
+            "G": 220,
+            "B": 220,
+            "A": 255
+        }
     }
 }
