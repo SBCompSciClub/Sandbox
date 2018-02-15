@@ -11,9 +11,9 @@
     },
     "boundaries": {
         "top": 25,
-        "bottom": 25,
-        "left": 2,
-        "right": 2
+        "bottom": 5,
+        "left": 5,
+        "right": 5
     },
     "colors": {
         "background": { "R": 245, "G": 245, "B": 245, "A": 255 },
