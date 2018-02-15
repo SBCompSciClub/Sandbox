@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
 import GenericWindow from './GenericWindow';
+import ChatContent from './ChatContent';
+import configuration from './configuration.json';
 class App extends Component
 {
     constructor()
@@ -26,14 +27,37 @@ class App extends Component
                 window.dispatchEvent(new CustomEvent("_event_onZIndexMDLWindow", { detail: { index: i, val: val } }));
             }
         });
+        this.firebaseInitialize = this.firebaseInitialize.bind(this);
+        this.firebaseSetData = this.firebaseSetData.bind(this);
+        this.firebaseUpdateData = this.firebaseUpdateData.bind(this);
+        this.firebaseAppendData = this.firebaseAppendData.bind(this);
+        this.firebaseGetData = this.firebaseGetData.bind(this);
+        this.firebaseInitialize(configuration);
+    }
+    firebaseInitialize(configuration)
+    {
+        window.dispatchEvent(new CustomEvent("_event_onInitializeFirebase", { detail: { configuration: configuration } }));
+    }
+    firebaseSetData(reference, data)
+    {
+        window.dispatchEvent(new CustomEvent("_event_onSetData", { detail: { reference: reference, data: data } }));
+    }
+    firebaseAppendData(reference, data, error, complete)
+    {
+        window.dispatchEvent(new CustomEvent("_event_onAppendData", { detail: { reference: reference, data: data, onError: error, onComplete: complete } }));
+    }
+    firebaseUpdateData(reference, data)
+    {
+        window.dispatchEvent(new CustomEvent("_event_onUpdateData", { detail: { reference: reference, data: data } }));
+    }
+    firebaseGetData(reference, callback)
+    {
+        window.dispatchEvent(new CustomEvent("_event_onGetData", { detail: { reference: reference, callback: callback } }));
     }
     componentWillMount()
     {
         let windows = [];
-        windows.push(<GenericWindow index={0} title="0">Shivan</GenericWindow>);
-        windows.push(<GenericWindow index={1} title="1" />);
-        windows.push(<GenericWindow index={2} title="2" />);
-        console.log(windows);
+        windows.push(<GenericWindow index={0} title="Chat"><ChatContent /></GenericWindow>);
         this.setState({
             windows: windows
         });

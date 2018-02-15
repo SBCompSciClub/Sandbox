@@ -16,7 +16,6 @@ class GenericWindow extends Component
             Height: 300
         };
         this.properties = JSON.parse(JSON.stringify(GenericWindowProps));
-        console.log(this.properties);
         window.addEventListener("mousemove", (e) =>
         {
             if (this.state.isDownMove)
@@ -166,7 +165,7 @@ class GenericWindow extends Component
                         offsetY: this.properties.window.location.y - e.clientY
                     });
                 }}>
-                    <p style={{ width: "100%", overflow: "hidden" }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }} onClick={(e) =>
+                    <p style={{ width: "100%", height: "100%", verticalAlign: "middle", overflow: "hidden" }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }} onClick={(e) =>
                     {
                         window.dispatchEvent(new CustomEvent("_event_onCloseMDLWindow", { detail: { index: this.props.index } }));
                     }}> <Icon name="close" /></Button></p>
@@ -185,7 +184,7 @@ class GenericWindow extends Component
                     {this.props.children}
                 </div>
             </div>
-        )
+        );
     }
 }
 export default GenericWindow;
