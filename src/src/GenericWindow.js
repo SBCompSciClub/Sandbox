@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import GenericWindowProps from "./GenericWindowProps.json"
+import { Icon } from 'react-fa';
 const CSS_ToRGB = (props) =>
 {
     return "rgba(" + props.R + ", " + props.G + ", " + props.B + ", " + props.A + ")";
@@ -18,53 +19,124 @@ class GenericWindow extends Component
         console.log(this.properties);
         window.addEventListener("mousemove", (e) =>
         {
-            if (this.state.isDown)
+            if (this.state.isDownMove)
             {
                 this.properties.window.location.x = e.clientX + this.state.offsetX;
                 this.properties.window.location.y = e.clientY + this.state.offsetY;
-                this.setState({
-                    RANDO: true
-                });
             }
+            else if (this.state.isDownResizeRight)
+            {
+                let newX = e.clientX + this.state.offsetX;
+                this.properties.window.size.width = newX - this.properties.window.location.x;
+                if (this.properties.window.size.width < this.properties.window.minSize.width)
+                {
+                    this.properties.window.size.width = this.properties.window.minSize.width;
+                }
+            }
+            else if (this.state.isDownResizeLeft)
+            {
+                let newX = e.clientX + this.state.offsetX;
+                this.properties.window.size.width = this.state.oldX - newX;
+                this.properties.window.location.x = e.clientX + this.state.offsetX;
+                if (this.properties.window.size.width < this.properties.window.minSize.width)
+                {
+                    this.properties.window.size.width = this.properties.window.minSize.width;
+                    this.properties.window.location.x = this.state.oldX - this.properties.window.size.width;
+                }
+            }
+            else if (this.state.isDownResizeBottom)
+            {
+                let newY = e.clientY + this.state.offsetY;
+                this.properties.window.size.height = newY - this.properties.window.location.y;
+                if (this.properties.window.size.height < this.properties.window.minSize.height)
+                {
+                    this.properties.window.size.height = this.properties.window.minSize.height;
+                }
+            }
+            else if (this.state.isDownResizeTop)
+            {
+                let newY = e.clientY + this.state.offsetY;
+                this.properties.window.size.height = this.state.oldY - newY;
+                this.properties.window.location.y = e.clientY + this.state.offsetY;
+                if (this.properties.window.size.height < this.properties.window.minSize.height)
+                {
+                    this.properties.window.size.height = this.properties.window.minSize.height;
+                    this.properties.window.location.y = this.state.oldY - this.properties.window.size.height;
+                }
+            }
+            this.setState({
+                RANDO: true
+            });
         });
         window.addEventListener("mouseup", (e) =>
         {
             this.setState({
-                isDown: false
+                isDownMove: false,
+                isDownResizeRight: false,
+                isDownResizeLeft: false,
+                isDownResizeBottom: false,
+                isDownResizeTop: false
             });
         });
     }
     componentWillMount()
     {
         this.setState({
-            isDown: false
+            isDownMove: false
         });
     }
     render()
     {
         return (
-            <div id="GenericWindow" style={{ position: "fixed", top: this.properties.window.location.y, left: this.properties.window.location.x, width: this.properties.window.size.width, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.background), boxShadow: "0 2px 4px 2px rgba(0, 0, 0, 0.2)" }}>
-                <div id="boundBottom" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: this.properties.boundaries.bottom, background: CSS_ToRGB(this.properties.colors.border) }}>
-
-                </div>
-                <div id="boundLeft" style={{ position: "absolute", top: 0, left: 0, right: 0, width: this.properties.boundaries.left, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.border) }}>
-
-                </div>
-                <div id="boundRight" style={{ position: "absolute", top: 0, right: 0, width: this.properties.boundaries.right, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.border) }}>
-
-                </div>
-                <div id="boundTop" style={{ position: "absolute", left: 0, right: 0, height: this.properties.boundaries.top, background: CSS_ToRGB(this.properties.colors.border), userSelect: "none", paddingLeft: 2, paddingRight: 2 }} onMouseDown={(e) =>
+            <div id="GenericWindow" style={{ position: "fixed", top: this.properties.window.location.y, left: this.properties.window.location.x, width: this.properties.window.size.width, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.background), boxShadow: "0 2px 4px 2px rgba(0, 0, 0, 0.2)", userSelect: "none" }}>
+                <div id="boundBottom" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: this.properties.boundaries.bottom, background: CSS_ToRGB(this.properties.colors.border), cursor: "ns-resize" }} onMouseDown={(e) =>
                 {
                     this.setState({
-                        isDown: true,
+                        isDownResizeBottom: true,
+                        offsetX: this.properties.window.location.x - e.clientX,
+                        offsetY: this.properties.window.location.y - e.clientY + this.properties.window.size.height
+                    });
+                }}>
+                </div>
+                <div id="boundLeft" style={{ position: "absolute", top: 0, left: 0, right: 0, width: this.properties.boundaries.left, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.border), cursor: "ew-resize" }} onMouseDown={(e) =>
+                {
+                    this.setState({
+                        isDownResizeLeft: true,
+                        offsetX: this.properties.window.location.x - e.clientX,
+                        offsetY: this.properties.window.location.y - e.clientY,
+                        oldX: this.properties.window.location.x + this.properties.window.size.width
+                    });
+                }}></div>
+                <div id="boundRight" style={{ position: "absolute", top: 0, right: 0, width: this.properties.boundaries.right, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.border), cursor: "ew-resize" }} onMouseDown={(e) =>
+                {
+                    this.setState({
+                        isDownResizeRight: true,
+                        offsetX: this.properties.window.location.x - e.clientX + this.properties.window.size.width,
+                        offsetY: this.properties.window.location.y - e.clientY
+                    });
+                }}></div>
+                <div id="boundTop" style={{ position: "absolute", left: 0, right: 0, height: this.properties.boundaries.top, background: CSS_ToRGB(this.properties.colors.border), userSelect: "none", paddingLeft: 2, paddingRight: 0 }} onMouseDown={(e) =>
+                {
+                    this.setState({
+                        isDownMove: true,
                         offsetX: this.properties.window.location.x - e.clientX,
                         offsetY: this.properties.window.location.y - e.clientY
                     });
                 }}>
-                    <p style={{ width: "100%" }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none" }}>Exit</Button></p>
+                    <p style={{ width: "100%", overflow: "hidden" }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }}><Icon name="close" /></Button></p>
+                </div>
+                <div id="boundTop" style={{ position: "absolute", top: 0, left: 0, right: 0, height: this.properties.boundaries.bottom, cursor: "ns-resize" }} onMouseDown={(e) =>
+                {
+                    this.setState({
+                        isDownResizeTop: true,
+                        offsetX: this.properties.window.location.x - e.clientX,
+                        offsetY: this.properties.window.location.y - e.clientY,
+                        oldY: this.properties.window.location.y + this.properties.window.size.height
+                    });
+                }}>
                 </div>
                 <div id="content" style={{ position: "absolute", top: this.properties.boundaries.top, left: this.properties.boundaries.left, width: this.properties.window.size.width - this.properties.boundaries.left - this.properties.boundaries.right, height: this.properties.window.size.height - this.properties.boundaries.top - this.properties.boundaries.bottom }}>
-                    shivan
+
                 </div>
             </div>
         )
