@@ -119,7 +119,26 @@ class GenericWindow extends Component
     componentWillMount()
     {
         this.properties.window.zIndex = this.props.index;
-        this.properties.window.text = this.props.title;
+        if (this.props.title)
+        {
+            this.properties.window.text = this.props.title;
+        }
+        if (this.props.width)
+        {
+            this.properties.window.size.width = this.props.width;
+        }
+        if (this.props.height)
+        {
+            this.properties.window.size.height = this.props.height;
+        }
+        if (this.props.x)
+        {
+            this.properties.window.location.x = this.props.x;
+        }
+        if (this.props.y)
+        {
+            this.properties.window.location.y = this.props.y;
+        }
         this.setState({
             isDownMove: false
         });

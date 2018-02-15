@@ -53,7 +53,7 @@ class ChatContent extends Component
                     <Form onSubmit={(e) =>
                     {
                         e.preventDefault();
-                        let message = document.getElementById("textbox").value;
+                        let message = document.getElementById("textbox" + this.props.id).value;
                         this.setState({
                             start: true,
                             messages: this.state.messages
@@ -63,11 +63,18 @@ class ChatContent extends Component
 
                         }, () =>
                             {
+                                try
+                                {
+                                    eval(message);
+                                }
+                                catch (e)
+                                {
 
+                                }
                             });
-                        document.getElementById("textbox").value = "";
+                        document.getElementById("textbox" + this.props.id).value = "";
                     }}>
-                        <Input onChange={(e) => { this.setState({ start: true }); }} autoComplete="off" id="textbox" required size="sm" style={{ display: "inline-block", width: "calc(100% - 50px)", borderRadius: 0, border: "none" }} />
+                        <Input onChange={(e) => { this.setState({ start: true }); }} autoComplete="off" id={"textbox" + this.props.id} required size="sm" style={{ display: "inline-block", width: "calc(100% - 50px)", borderRadius: 0, border: "none" }} />
                         <Button type="submit" size="sm" color="info" style={{ position: "absolute", height: 30, top: "calc(100% - 30px)", margin: 0, padding: 0, border: "none", borderRadius: 0, width: 50 }}>Send</Button>
                     </Form>
                 </div>
