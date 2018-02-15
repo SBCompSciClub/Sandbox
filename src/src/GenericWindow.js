@@ -97,10 +97,30 @@ class GenericWindow extends Component
                 });
             }
         });
+        window.addEventListener("_event_onZIndexMDLWindow", (e) =>
+        {
+            let idx = e.detail.index;
+            let val = e.detail.val;
+            if (idx === this.props.index)
+            {
+                if (val === -1)
+                {
+                    this.properties.window.zIndex--;
+                }
+                else
+                {
+                    this.properties.window.zIndex = val;
+                }
+                this.setState({
+                    RANDO: true
+                });
+            }
+        });
     }
     componentWillMount()
     {
-        this.properties.window.zIndex = this.props.zIndex;
+        this.properties.window.zIndex = this.props.index;
+        this.properties.window.text = this.props.title;
         this.setState({
             isDownMove: false
         });
@@ -162,7 +182,7 @@ class GenericWindow extends Component
                 }}>
                 </div>
                 <div id="content" style={{ position: "absolute", top: this.properties.boundaries.top, left: this.properties.boundaries.left, width: this.properties.window.size.width - this.properties.boundaries.left - this.properties.boundaries.right, height: this.properties.window.size.height - this.properties.boundaries.top - this.properties.boundaries.bottom }}>
-
+                    {this.props.children}
                 </div>
             </div>
         )

@@ -9,7 +9,7 @@ class App extends Component
         window.addEventListener("_event_onCloseMDLWindow", (e) =>
         {
             let idx = e.detail.index;
-            this.state.windows.splice(idx, 1);
+            this.state.windows[idx] = null;
             this.setState({
                 windows: this.state.windows
             });
@@ -30,8 +30,10 @@ class App extends Component
     componentWillMount()
     {
         let windows = [];
-        windows.push(<GenericWindow index={0} zIndex={0} />);
-        windows.push(<GenericWindow index={1} zIndex={1} />);
+        windows.push(<GenericWindow index={0} title="0">Shivan</GenericWindow>);
+        windows.push(<GenericWindow index={1} title="1" />);
+        windows.push(<GenericWindow index={2} title="2" />);
+        console.log(windows);
         this.setState({
             windows: windows
         });
@@ -41,7 +43,7 @@ class App extends Component
         return (
             <div className="App">
                 {this.state.windows}
-            </div >
+            </div>
         );
     }
 }
