@@ -3,6 +3,8 @@ import GenericWindow from './GenericWindow';
 import ChatContent from './ChatContent';
 import ChatHistoryContent from './ChatHistoryContent';
 import configuration from './configuration.json';
+import stegoImage from './media/Stego.png';
+import copySlashB from './media/copySlashB.mp3';
 import { Button } from 'reactstrap';
 class App extends Component
 {
@@ -46,6 +48,18 @@ class App extends Component
                 windows: this.state.windows
             });
         });
+        window.addEventListener("_new_window_audio", (e) =>
+        {
+            this.state.windows.push(
+                <GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={310} index={this.index} title="Audio">
+                    <img src={stegoImage} width="100%"/>
+                    <audio controls><source src={copySlashB} type="audio/mp3"/></audio>
+                </GenericWindow>);
+            this.index++;
+            this.setState({
+                windows: this.state.windows
+            });
+        });
         window.addEventListener("_new_window_about", (e) =>
         {
             this.state.windows.push(
@@ -55,7 +69,7 @@ class App extends Component
                     <br />
                         CSC@SBHS
                     <br />
-                        Sandbox v0.0.1
+                        Sandbox v0.0.2
                 </div>
                 </GenericWindow>);
             this.index++;
@@ -66,10 +80,11 @@ class App extends Component
         window.addEventListener("_new_window_open", (e) =>
         {
             this.state.windows.push(
-                <GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title="Windows" width={132} height={150}>
-                    <Button style={{ borderRadius: 0, width: 125 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_chat")); }}>Chat</Button><br />
-                    <Button style={{ borderRadius: 0, width: 125 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_about")); }}>About</Button><br />
-                    <Button style={{ borderRadius: 0, width: 125 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_history")); }}>Chat History</Button>
+                <GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title="Windows" width={150} height={185}>
+                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_chat")); }}>Chat</Button><br />
+                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_about")); }}>About</Button><br />
+                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_history")); }}>Chat History</Button><br />
+                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_audio")); }}>Audio Challenge</Button>
                 </GenericWindow>);
             this.index++;
             this.setState({
@@ -111,9 +126,8 @@ class App extends Component
     }
     componentDidMount()
     {
-        window.dispatchEvent(new Event("_new_window_open"));
-        window.dispatchEvent(new Event("_new_window_chat"));
         window.dispatchEvent(new Event("_new_window_about"));
+        window.dispatchEvent(new Event("_new_window_open"));
     }
     render()
     {
