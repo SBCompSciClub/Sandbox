@@ -8,9 +8,9 @@ const CSS_ToRGB = (props) =>
 }
 class GenericWindow extends Component
 {
-    constructor()
+    constructor(props)
     {
-        super();
+        super(props);
         this.Size = {
             Width: 300,
             Height: 300

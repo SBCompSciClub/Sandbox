@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GenericWindow from './GenericWindow';
+import GenericContent from './GenericContent';
 import ChatContent from './ChatContent';
 import ChatHistoryContent from './ChatHistoryContent';
 import configuration from './configuration.json';
@@ -66,9 +67,9 @@ class App extends Component
                 <GenericWindow index={this.index} title="About" width={350} height={110} x={this.index * 10} y={this.index * 10}>
                     <div style={{ width: "100%", height: "100%", background: "rgb(220, 220, 220)" }}>
                         Created by: Shivan Modha and Kevin Sun
-                    <br />
+                    <br/>
                         CSC@SBHS
-                    <br />
+                    <br/>
                         Sandbox v0.0.2
                 </div>
                 </GenericWindow>);
@@ -128,6 +129,12 @@ class App extends Component
     {
         window.dispatchEvent(new Event("_new_window_about"));
         window.dispatchEvent(new Event("_new_window_open"));
+        this.state.windows.push(
+            <GenericWindow x={100} y={100} index={this.index} title="Generic" width={200} height={200}>
+                <GenericContent />
+            </GenericWindow>
+        );
+        this.index++;
     }
     render()
     {
