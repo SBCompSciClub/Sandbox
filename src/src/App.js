@@ -7,6 +7,7 @@ import configuration from './configuration.json';
 import stegoImage from './media/Stego.png';
 import copySlashB from './media/copySlashB.mp3';
 import { Button } from 'reactstrap';
+import sb_back from './sb/sb-back.jpg';
 class App extends Component
 {
     constructor()
@@ -140,7 +141,17 @@ class App extends Component
     {
         return (
             <div className="App">
-                {this.state.windows}
+                <div id="background" style={{ backgroundImage: "url(" + sb_back + ")", zIndex: -20000 }}>
+                    lol
+                </div>
+                <div id="container">
+                    <div id="window-container" style={{ background: "red" }}>
+                        {this.state.windows}
+                    </div>
+                    <div id="menu" style={{ position: "absolute", width: "100%", bottom: 0, background: "red", zIndex: 10000 }}>
+                        HELLO
+                    </div>
+                </div>
             </div>
         );
     }

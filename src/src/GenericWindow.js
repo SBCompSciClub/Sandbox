@@ -146,7 +146,7 @@ class GenericWindow extends Component
     render()
     {
         return (
-            <div id="GenericWindow" style={{ position: "fixed", top: this.properties.window.location.y, left: this.properties.window.location.x, width: this.properties.window.size.width, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.background), boxShadow: "0 2px 4px 2px rgba(0, 0, 0, 0.2)", userSelect: "none", zIndex: this.properties.window.zIndex }} onMouseDown={(e) =>
+            <div id="GenericWindow" style={{ position: "fixed", top: this.properties.window.location.y, left: this.properties.window.location.x, width: this.properties.window.size.width, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.background), boxShadow: "0 2px 4px 2px rgba(0, 0, 0, 0.2)", userSelect: "none", zIndex: this.properties.window.zIndex - 1000 }} onMouseDown={(e) =>
             {
                 window.dispatchEvent(new CustomEvent("_event_onWindowSelect", { detail: { index: this.props.index } }));
             }}>
