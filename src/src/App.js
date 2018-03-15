@@ -7,6 +7,7 @@ import configuration from './configuration.json';
 import stegoImage from './media/Stego.png';
 import copySlashB from './media/copySlashB.mp3';
 import { Button } from 'reactstrap';
+import ico01 from './media/ico01.ico';
 class App extends Component
 {
     constructor()
@@ -141,11 +142,11 @@ class App extends Component
          return (
             <div className="App">
                 <div id="container">
-                    <div id="window-container" style={{ background: "red" }}>
+                    <div id="window-container" style={{background:"transparent"}}>
                         {this.state.windows}
                     </div>
-                    <div id="menu" style={{ position: "absolute", width: "100%", bottom: 0, background: "red", zIndex: 10000 }}>
-                        HELLO
+                     <div id="menu" style={{ position: "absolute", width: "100%", bottom: 0, background: "rgba(0, 0, 0, 0.75)", color: "white", zIndex: 10000 }}>
+                         <Button outline style={{ width: 50, height: 40, marginLeft: 10, borderRadius: 0, borderTop: 0, borderBottom: 0, border: 0, backgroundImage: "url(" + ico01 + ")", backgroundSize: "25px 25px", backgroundRepeat: "no-repeat", backgroundPosition: "center" }}></Button>
                     </div>
                 </div>
             </div>

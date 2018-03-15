@@ -159,7 +159,7 @@ class GenericWindow extends Component
                     });
                 }}>
                 </div>
-                <div id="boundLeft" style={{ position: "absolute", top: 0, left: 0, right: 0, width: this.properties.boundaries.left, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.border), cursor: "ew-resize" }} onMouseDown={(e) =>
+                <div id="boundLeft" style={{ position: "absolute", top: this.properties.boundaries.top, left: 0, right: 0, width: this.properties.boundaries.left, height: this.properties.window.size.height - this.properties.boundaries.top - this.properties.boundaries.bottom, background: CSS_ToRGB(this.properties.colors.border), cursor: "ew-resize" }} onMouseDown={(e) =>
                 {
                     this.setState({
                         isDownResizeLeft: true,
@@ -168,7 +168,7 @@ class GenericWindow extends Component
                         oldX: this.properties.window.location.x + this.properties.window.size.width
                     });
                 }}></div>
-                <div id="boundRight" style={{ position: "absolute", top: 0, right: 0, width: this.properties.boundaries.right, height: this.properties.window.size.height, background: CSS_ToRGB(this.properties.colors.border), cursor: "ew-resize" }} onMouseDown={(e) =>
+                <div id="boundRight" style={{ position: "absolute", top: this.properties.boundaries.top, right: 0, width: this.properties.boundaries.right, height: this.properties.window.size.height - this.properties.boundaries.top - this.properties.boundaries.bottom, background: CSS_ToRGB(this.properties.colors.border), cursor: "ew-resize" }} onMouseDown={(e) =>
                 {
                     this.setState({
                         isDownResizeRight: true,
@@ -184,7 +184,7 @@ class GenericWindow extends Component
                         offsetY: this.properties.window.location.y - e.clientY
                     });
                 }}>
-                    <p style={{ width: "100%", height: "100%", verticalAlign: "middle", overflow: "hidden" }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }} onClick={(e) =>
+                    <p style={{ width: "100%", height: "100%", verticalAlign: "middle", overflow: "hidden", marginTop: 3, marginLeft: 3 }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, top: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }} onClick={(e) =>
                     {
                         window.dispatchEvent(new CustomEvent("_event_onCloseMDLWindow", { detail: { index: this.props.index } }));
                     }}> <Icon name="times" /></Button></p>
@@ -199,7 +199,7 @@ class GenericWindow extends Component
                     });
                 }}>
                 </div>
-                <div id="content" style={{ position: "absolute", top: this.properties.boundaries.top, left: this.properties.boundaries.left, width: this.properties.window.size.width - this.properties.boundaries.left - this.properties.boundaries.right, height: this.properties.window.size.height - this.properties.boundaries.top - this.properties.boundaries.bottom }}>
+                <div id="content" style={{ position: "absolute", top: this.properties.boundaries.top, left: this.properties.boundaries.left, width: this.properties.window.size.width - this.properties.boundaries.left - this.properties.boundaries.right, height: this.properties.window.size.height - this.properties.boundaries.top - this.properties.boundaries.bottom, background: CSS_ToRGB(this.properties.colors.inner) }}>
                     {this.props.children}
                 </div>
             </div>
