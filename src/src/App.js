@@ -7,12 +7,19 @@ import configuration from './configuration.json';
 import stegoImage from './media/Stego.png';
 import copySlashB from './media/copySlashB.mp3';
 import { Button } from 'reactstrap';
-import ico01 from './media/ico01.ico';
 class App extends Component
 {
     constructor()
     {
         super();
+        window.dispatchEvent(new CustomEvent("_event_onGetBase", {
+            detail: {
+                callback: (e) =>
+                {
+                    this.BaseURL = e;
+                }
+            }
+        }));
         this.index = 0;
         window.addEventListener("_event_onCloseMDLWindow", (e) =>
         {
@@ -34,65 +41,41 @@ class App extends Component
                 window.dispatchEvent(new CustomEvent("_event_onZIndexMDLWindow", { detail: { index: i, val: val } }));
             }
         });
-        window.addEventListener("_new_window_chat", (e) =>
-        {
-            this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title="Chat"><ChatContent id={this.index} /></GenericWindow>);
+        window.addEventListener("_new_window", (e) => {
+            this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title={e.detail.title} width={e.detail.width} height={e.detail.height} icon={e.detail.icon}><GenericContent html={e.detail.html} /></GenericWindow>);
             this.index++;
             this.setState({
                 windows: this.state.windows
             });
         });
-        window.addEventListener("_new_window_history", (e) =>
-        {
-            this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={600} index={this.index} title="History"><ChatHistoryContent id={this.index} /></GenericWindow>);
-            this.index++;
-            this.setState({
-                windows: this.state.windows
-            });
-        });
-        window.addEventListener("_new_window_audio", (e) =>
-        {
-            this.state.windows.push(
-                <GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={310} index={this.index} title="Audio">
-                    <img src={stegoImage} width="100%"/>
-                    <audio controls><source src={copySlashB} type="audio/mp3"/></audio>
-                </GenericWindow>);
-            this.index++;
-            this.setState({
-                windows: this.state.windows
-            });
-        });
-        window.addEventListener("_new_window_about", (e) =>
-        {
-            this.state.windows.push(
-                <GenericWindow index={this.index} title="About" width={350} height={110} x={this.index * 10} y={this.index * 10}>
-                    <div style={{ width: "100%", height: "100%", background: "rgb(220, 220, 220)" }}>
-                        Created by: Shivan Modha and Kevin Sun
-                    <br/>
-                        CSC@SBHS
-                    <br/>
-                        Sandbox v0.0.2
-                </div>
-                </GenericWindow>);
-            this.index++;
-            this.setState({
-                windows: this.state.windows
-            });
-        });
-        window.addEventListener("_new_window_open", (e) =>
-        {
-            this.state.windows.push(
-                <GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title="Windows" width={150} height={185}>
-                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_chat")); }}>Chat</Button><br />
-                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_about")); }}>About</Button><br />
-                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_history")); }}>Chat History</Button><br />
-                    <Button style={{ borderRadius: 0, width: 145 }} onClick={(e) => { window.dispatchEvent(new Event("_new_window_audio")); }}>Audio Challenge</Button>
-                </GenericWindow>);
-            this.index++;
-            this.setState({
-                windows: this.state.windows
-            });
-        });
+        // window.addEventListener("_new_window_chat", (e) =>
+        // {
+        //     this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title="Chat"><ChatContent id={this.index} /></GenericWindow>);
+        //     this.index++;
+        //     this.setState({
+        //         windows: this.state.windows
+        //     });
+        // });
+        // window.addEventListener("_new_window_history", (e) =>
+        // {
+        //     this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={600} index={this.index} title="History"><ChatHistoryContent id={this.index} /></GenericWindow>);
+        //     this.index++;
+        //     this.setState({
+        //         windows: this.state.windows
+        //     });
+        // });
+        // window.addEventListener("_new_window_audio", (e) =>
+        // {
+        //     this.state.windows.push(
+        //         <GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={310} index={this.index} title="Audio">
+        //             <img src={stegoImage} width="100%"/>
+        //             <audio controls><source src={copySlashB} type="audio/mp3"/></audio>
+        //         </GenericWindow>);
+        //     this.index++;
+        //     this.setState({
+        //         windows: this.state.windows
+        //     });
+        // });
         this.firebaseInitialize = this.firebaseInitialize.bind(this);
         this.firebaseSetData = this.firebaseSetData.bind(this);
         this.firebaseUpdateData = this.firebaseUpdateData.bind(this);
@@ -125,28 +108,57 @@ class App extends Component
         this.setState({
             windows: []
         });
+        window.dispatchEvent(new CustomEvent("_event_onRequestFile", {
+            detail: {
+                path: this.BaseURL + "/resources/windows.json",
+                onLoaded: (_result) =>
+                {
+                    this.WindowArr = JSON.parse(_result)["windows"];
+                    this.setState({ RANDO: "RAN" });
+                    let itm = this.WindowArr[0];
+                    window.dispatchEvent(new CustomEvent("_new_window", {
+                        detail: {
+                            icon: itm["icon"],
+                            title: itm["title"],
+                            width: itm["width"],
+                            height: itm["height"],
+                            html: itm["html"]
+                        }
+                    }));
+                }
+            }
+        }));
     }
     componentDidMount()
     {
-        window.dispatchEvent(new Event("_new_window_about"));
-        window.dispatchEvent(new Event("_new_window_open"));
-        this.state.windows.push(
-            <GenericWindow x={100} y={100} index={this.index} title="Generic" width={200} height={200}>
-                <GenericContent />
-            </GenericWindow>
-        );
-        this.index++;
     }
     render()
     {
-         return (
+        let itms = [];
+        if (this.WindowArr) {
+            for (let i = 0; i < this.WindowArr.length; i++) {
+                let itm = this.WindowArr[i];
+                itms.push(<Button outline color="info" style={{ width: 50, height: 40, borderRadius: 0, borderTop: 0, borderBottom: 0, border: 0, backgroundImage: "url('" + itm["icon"] + "')", backgroundSize: "25px 25px", backgroundRepeat: "no-repeat", backgroundPosition: "center" }} onClick={(e) => {
+                    window.dispatchEvent(new CustomEvent("_new_window", {
+                        detail: {
+                            icon: itm["icon"],
+                            title: itm["title"],
+                            width: itm["width"],
+                            height: itm["height"],
+                            html: itm["html"]
+                        }
+                    }));
+                }}></Button>);
+            }
+        }
+        return (
             <div className="App">
                 <div id="container">
                     <div id="window-container" style={{background:"transparent"}}>
                         {this.state.windows}
                     </div>
-                     <div id="menu" style={{ position: "absolute", width: "100%", bottom: 0, background: "rgba(0, 0, 0, 0.75)", color: "white", zIndex: 10000 }}>
-                         <Button outline style={{ width: 50, height: 40, marginLeft: 10, borderRadius: 0, borderTop: 0, borderBottom: 0, border: 0, backgroundImage: "url(" + ico01 + ")", backgroundSize: "25px 25px", backgroundRepeat: "no-repeat", backgroundPosition: "center" }}></Button>
+                    <div id="menu" style={{ position: "absolute", width: "100%", bottom: 0, background: "rgba(0, 0, 0, 0.75)", color: "white", zIndex: 10000, paddingLeft: 10 }}>
+                        {itms}
                     </div>
                 </div>
             </div>

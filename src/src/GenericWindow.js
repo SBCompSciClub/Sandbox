@@ -184,7 +184,8 @@ class GenericWindow extends Component
                         offsetY: this.properties.window.location.y - e.clientY
                     });
                 }}>
-                    <p style={{ width: "100%", height: "100%", verticalAlign: "middle", overflow: "hidden", marginTop: 3, marginLeft: 3 }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, top: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }} onClick={(e) =>
+                    <div style={{ backgroundImage: "url(" + this.props.icon + ")", width: 15, height: 15, top: (this.properties.boundaries.top / 2) - 7.5, marginLeft: 4, position: "absolute", backgroundSize: "15px 15px", backgroundRepeat: "no-repeat", backgroundPosition: "center" }}></div>
+                    <p style={{ display: "inline-block", width: "100%", height: "100%", verticalAlign: "middle", overflow: "hidden", marginTop: 3, marginLeft: 23 }}>{this.properties.window.text}<Button outline color="danger" style={{ position: "absolute", right: 0, top: 0, width: this.properties.boundaries.top, height: this.properties.boundaries.top, borderRadius: 0, border: "none", margin: 0, padding: 0 }} onClick={(e) =>
                     {
                         window.dispatchEvent(new CustomEvent("_event_onCloseMDLWindow", { detail: { index: this.props.index } }));
                     }}> <Icon name="times" /></Button></p>

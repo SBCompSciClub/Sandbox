@@ -1,0 +1,18 @@
+{
+    "windows": [
+        {
+            "title": "About",
+            "html": "/resources/windows/about/index.html",
+            "icon": "/resources/windows/about/icon.ico",
+            "width": 300,
+            "height": 100
+        },
+        {
+            "title": "LOL",
+            "html": "/path/to/html",
+            "icon": "/favicon.ico",
+            "width": 300,
+            "height": 300
+        }
+    ]
+}

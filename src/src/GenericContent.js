@@ -20,16 +20,26 @@ class GenericContent extends Component
         });
         window.dispatchEvent(new CustomEvent("_event_onRequestFile", {
             detail: {
-                path: this.BaseURL + "/resources/file.html",
+                path: this.BaseURL + this.props.html,
                 onLoaded: (_result) => {
-                    let jsArr = /<script>[\s\S]*<\/script>/gi.exec(_result);
-                    let js = jsArr[0].replace("<script>", "").replace("</script>", "");
-                    let html = _result.replace(jsArr[0], "");
-                    this.setState({
-                        html: html,
-                        js: js
-                    });
-                    window.eval(js);
+                    if (_result && _result.length > 0) {
+                        let jsArr = /<script>[\s\S]*<\/script>/gi.exec(_result);
+                        let js = "";
+                        let html = _result;
+                        if (jsArr) {
+                            js = jsArr[0].replace("<script>", "").replace("</script>", "");
+                            html = _result.replace(jsArr[0], "");
+                        }
+                        this.setState({
+                            html: html,
+                            js: js
+                        });
+                        window.eval(js);
+                    } else {
+                        this.setState({
+                            html: "404 Error"
+                        })
+                    }
                 }
             }
         }));
@@ -37,7 +47,7 @@ class GenericContent extends Component
     render()
     {
         return (
-            <div id="contentContainer" dangerouslySetInnerHTML={{ __html: this.state.html }}></div>
+            <div id="contentContainer" style={{ overflow: "hidden" }} dangerouslySetInnerHTML={{ __html: this.state.html }}></div>
         );
     }
 }
