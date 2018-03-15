@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import GenericWindow from './GenericWindow';
 import GenericContent from './GenericContent';
-import ChatContent from './ChatContent';
-import ChatHistoryContent from './ChatHistoryContent';
 import configuration from './configuration.json';
 import { Button } from 'reactstrap';
 class App extends Component
@@ -54,14 +52,6 @@ class App extends Component
                 winArrId: this.state.winArrId
             });
         });
-        // window.addEventListener("_new_window_history", (e) =>
-        // {
-        //     this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={600} index={this.index} title="History"><ChatHistoryContent id={this.index} /></GenericWindow>);
-        //     this.index++;
-        //     this.setState({
-        //         windows: this.state.windows
-        //     });
-        // });
         this.firebaseInitialize = this.firebaseInitialize.bind(this);
         this.firebaseSetData = this.firebaseSetData.bind(this);
         this.firebaseUpdateData = this.firebaseUpdateData.bind(this);
