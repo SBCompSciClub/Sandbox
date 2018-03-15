@@ -22,6 +22,11 @@ class App extends Component
         window.addEventListener("_event_onCloseMDLWindow", (e) =>
         {
             let idx = e.detail.index;
+            if (this.state.winArrId[idx])
+            {
+                this.WindowArr[this.state.winArrId[idx]]["cWin"] -= 1;
+                this.state.winArrId[idx] = null;
+            }    
             this.state.windows[idx] = null;
             this.setState({
                 windows: this.state.windows
@@ -40,35 +45,18 @@ class App extends Component
             }
         });
         window.addEventListener("_new_window", (e) => {
-            this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title={e.detail.title} width={e.detail.width} height={e.detail.height} icon={e.detail.icon}><GenericContent html={e.detail.html} /></GenericWindow>);
+            let win = <GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title={e.detail.title} width={e.detail.width} height={e.detail.height} icon={e.detail.icon}><GenericContent html={e.detail.html} /></GenericWindow>;
+            this.state.winArrId.push(e.detail.id);
+            this.state.windows.push(win);
             this.index++;
             this.setState({
-                windows: this.state.windows
+                windows: this.state.windows,
+                winArrId: this.state.winArrId
             });
         });
-        // window.addEventListener("_new_window_chat", (e) =>
-        // {
-        //     this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} index={this.index} title="Chat"><ChatContent id={this.index} /></GenericWindow>);
-        //     this.index++;
-        //     this.setState({
-        //         windows: this.state.windows
-        //     });
-        // });
         // window.addEventListener("_new_window_history", (e) =>
         // {
         //     this.state.windows.push(<GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={600} index={this.index} title="History"><ChatHistoryContent id={this.index} /></GenericWindow>);
-        //     this.index++;
-        //     this.setState({
-        //         windows: this.state.windows
-        //     });
-        // });
-        // window.addEventListener("_new_window_audio", (e) =>
-        // {
-        //     this.state.windows.push(
-        //         <GenericWindow x={this.index * 10} y={this.index * 10} width={400} height={310} index={this.index} title="Audio">
-        //             <img src={stegoImage} width="100%"/>
-        //             <audio controls><source src={copySlashB} type="audio/mp3"/></audio>
-        //         </GenericWindow>);
         //     this.index++;
         //     this.setState({
         //         windows: this.state.windows
@@ -104,7 +92,8 @@ class App extends Component
     componentWillMount()
     {
         this.setState({
-            windows: []
+            windows: [],
+            winArrId: []
         });
         window.dispatchEvent(new CustomEvent("_event_onRequestFile", {
             detail: {
@@ -137,15 +126,31 @@ class App extends Component
             for (let i = 0; i < this.WindowArr.length; i++) {
                 let itm = this.WindowArr[i];
                 itms.push(<Button outline color="info" style={{ width: 50, height: 40, borderRadius: 0, borderTop: 0, borderBottom: 0, border: 0, backgroundImage: "url('" + itm["icon"] + "')", backgroundSize: "25px 25px", backgroundRepeat: "no-repeat", backgroundPosition: "center" }} onClick={(e) => {
-                    window.dispatchEvent(new CustomEvent("_new_window", {
-                        detail: {
-                            icon: itm["icon"],
-                            title: itm["title"],
-                            width: itm["width"],
-                            height: itm["height"],
-                            html: itm["html"]
-                        }
-                    }));
+                    if (!this.WindowArr[i]["cWin"])
+                    {
+                        this.WindowArr[i]["cWin"] = 1;
+                    }
+                    else
+                    {                    
+                    }
+                    if (!this.WindowArr[i]["maxWin"] || this.WindowArr[i]["cWin"] <= itm["maxWin"])
+                    {
+                        this.WindowArr[i]["cWin"] += 1;    
+                        window.dispatchEvent(new CustomEvent("_new_window", {
+                            detail: {
+                                icon: itm["icon"],
+                                title: itm["title"],
+                                width: itm["width"],
+                                height: itm["height"],
+                                html: itm["html"],
+                                id: i
+                            }
+                        }));
+                    }
+                    else
+                    {
+
+                    }
                 }}></Button>);
             }
         }
