@@ -47,7 +47,7 @@ class GenericContent extends Component
     render()
     {
         return (
-            <div id="contentContainer" style={{ overflow: "hidden" }} dangerouslySetInnerHTML={{ __html: this.state.html }}></div>
+            <div id="contentContainer" style={{ overflow: "auto" }} dangerouslySetInnerHTML={{ __html: this.state.html }}></div>
         );
     }
 }
