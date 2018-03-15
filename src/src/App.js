@@ -4,8 +4,6 @@ import GenericContent from './GenericContent';
 import ChatContent from './ChatContent';
 import ChatHistoryContent from './ChatHistoryContent';
 import configuration from './configuration.json';
-import stegoImage from './media/Stego.png';
-import copySlashB from './media/copySlashB.mp3';
 import { Button } from 'reactstrap';
 class App extends Component
 {

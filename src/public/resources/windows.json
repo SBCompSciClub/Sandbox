@@ -8,11 +8,11 @@
             "height": 100
         },
         {
-            "title": "LOL",
-            "html": "/path/to/html",
-            "icon": "/favicon.ico",
-            "width": 300,
-            "height": 300
+            "title": "Audio 01",
+            "html": "/resources/windows/audio01/index.html",
+            "icon": "/resources/windows/audio01/icon.png",
+            "width": 400,
+            "height": 310
         }
     ]
 }
